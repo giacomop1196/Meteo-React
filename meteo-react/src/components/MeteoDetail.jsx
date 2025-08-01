@@ -66,6 +66,10 @@ const MeteoDetail = (props) => {
                 console.error("Errore nel recupero dei dati:", error);
                 setIsLoading(false)
                 setIsError(true)
+
+                //Resetto i risultati perchè altrimenti rimanevano salvati
+                setResults(null); 
+                setResultsPrev(null);
             })
 
         //API Previsioni
@@ -89,6 +93,10 @@ const MeteoDetail = (props) => {
                 console.error("Errore nel recupero dei dati:", error);
                 setIsLoading(false)
                 setIsError(true)
+                
+                //Resetto i risultati perchè altrimenti rimanevano salvati
+                setResults(null);
+                setResultsPrev(null);
             })
     }
 
@@ -115,15 +123,23 @@ const MeteoDetail = (props) => {
         <>
             {/* Spinner */}
             {isLoading && (
-                <div className="text-center mb-3">
-                    <Spinner animation="grow" />
-                </div>
+                <Container fluid className="min-vh-100 bg-light background-image">
+                    <Row className="p-5">
+                        <div className="text-center mb-3">
+                            <Spinner animation="grow" />
+                        </div>
+                    </Row>
+                </Container>
             )}
             {/* Errore se vado nel catch */}
             {isError && (
-                <Alert variant="danger" className="text-center">
-                    Errore nel recupero dei dati
-                </Alert>
+                <Container fluid className="min-vh-100 bg-light background-image">
+                    <Row className="p-5">
+                        <Alert variant="danger" className="text-center">
+                           <i class="bi bi-exclamation-triangle-fill"></i> Errore nel recupero dei dati!
+                        </Alert>
+                    </Row>
+                </Container>
             )}
             {/* Risultato */}
             {results && (
@@ -153,10 +169,10 @@ const MeteoDetail = (props) => {
 
                                         {/* Se la temperatura sale sopra i 27° compare un Alert */}
                                         {results.main.temp > 27 && (
-                                        <Alert key='danger' variant='danger' className="mt-3">
-                                        <i class="bi bi-exclamation-triangle-fill"></i> Allerta moderata per temperature elevate!
-                                        </Alert>
-                                    )}
+                                            <Alert key='danger' variant='danger' className="mt-3">
+                                                <i class="bi bi-exclamation-triangle-fill"></i> Allerta moderata per temperature elevate!
+                                            </Alert>
+                                        )}
 
                                         <span className="lead text-muted text-capitalize">{results.weather[0].description}</span>
                                     </div>
