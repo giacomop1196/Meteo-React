@@ -72,7 +72,7 @@ const MeteoHome = (props) => {
                 </Alert>
             )}
             {results && (
-                <Card className="text-body rounded-5 h-100 shadow-sm w-100" onClick={() => {navigate('/detail/' + results.id)}}>
+                <Card className="text-body rounded-5 h-100 shadow-sm w-100" onClick={() => {navigate('/detail/id/' + results.id)}}>
                     <Card.Body className="p-4 d-flex flex-column">
                         <div className="d-flex mb-auto">
                             <h6 className="flex-grow-1">{results.name}, {results.sys.country}</h6>

@@ -20,8 +20,10 @@ function App() {
         <Routes>
           {/*  MAIN HOME   */}
           <Route path='/' element={<MeteoMainHome language={language} />} />
-          {/*  DETTAGLI   */}
-          <Route path='/detail/:id' element={<MeteoDetail language={language} />} />
+          {/*  DETTAGLI RICERCA TRAMITE ID (CLICK DELLA CARD)  */}
+          <Route path="/detail/id/:cityId" element={<MeteoDetail language={language} />} />
+          {/*  DETTAGLI RICERCA TRAMITE NOME CITTA' (FORM DI RICERCA)  */}
+          <Route path="/detail/name/:cityName" element={<MeteoDetail language={language} />} />
         </Routes>
         {/*  FOOTER   */}
         <MeteoFooter />

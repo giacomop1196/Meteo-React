@@ -4,16 +4,15 @@ import { useState, useEffect } from 'react'
 
 const MeteoDetail = (props) => {
 
-    // ID passato come parametro
+    // Recupero il Parametro dal path
     const params = useParams()
-    const cityId = params.id
 
     const language = props.language
 
     const apiKey = 'e682f93aa9548563db7cca91d648b460'
 
     //Link API per cercare tramite ID della città
-    const apiLink = `https://api.openweathermap.org/data/2.5/weather?id=${cityId}&appid=${apiKey}&lang=${language}&units=metric`
+    // const apiLink = `https://api.openweathermap.org/data/2.5/weather?${cityId}&appid=${apiKey}&lang=${language}&units=metric`
 
     const [results, setResults] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
@@ -21,13 +20,29 @@ const MeteoDetail = (props) => {
 
 
     useEffect(() => {
-        getResults()
+
+        let queryParam = '';
+
+        // Determina se stiamo cercando per ID o per Nome
+        if (params.cityId) {
+            queryParam = `id=${params.cityId}`;
+        } else {
+            queryParam = `q=${params.cityName}`;
+
+        }
+
+        //Link API
+        const apiLink = `https://api.openweathermap.org/data/2.5/weather?${queryParam}&appid=${apiKey}&lang=${language}&units=metric`;
+
+        // Chiama getResults passandogli il link completo dell'api
+        getResults(apiLink);
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [params.id, props.language])
+    }, [params.cityId, params.cityName, language]);
 
 
     //Funzione per recuperare i dati dall'api
-    const getResults = () => {
+    const getResults = (apiLink) => {
 
         fetch(apiLink, {
         })

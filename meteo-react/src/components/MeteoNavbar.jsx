@@ -1,9 +1,24 @@
 import { Container, Form, Nav, Button, Navbar, NavDropdown } from "react-bootstrap"
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useState } from 'react';
 
 const MeteoNavbar = ({ onLanguageChange }) => {
 
   const location = useLocation()
+  const navigate = useNavigate();
+
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault(); // Previene il comportamento di default del form (ricaricare la pagina)
+    if (searchQuery.trim() !== '') {
+      // Naviga alla pagina di dettaglio con la query di ricerca
+      // Potresti passare l'ID o il nome della città, a seconda di come costruirai la Detail page
+      // Per semplicità, useremo il nome della città nella URL
+      navigate(`/detail/name/${searchQuery.trim()}`); // Naviga a /detail/name/NomeCitta
+      setSearchQuery(''); // Pulisce l'input dopo la ricerca
+    }
+  };
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
@@ -16,7 +31,7 @@ const MeteoNavbar = ({ onLanguageChange }) => {
             <Link className={location.pathname === '/' ? 'nav-link active' : 'nav-link'} to="/"> Home </Link>
 
             <Nav.Link>Previsioni</Nav.Link>
-            
+
             <NavDropdown title="Lingua" id="language-dropdown">
               <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
                 <NavDropdown.Item onClick={() => onLanguageChange('en')}>
@@ -46,9 +61,11 @@ const MeteoNavbar = ({ onLanguageChange }) => {
               </div>
             </NavDropdown>
           </Nav>
-          <Form className="d-flex">
+          <Form className="d-flex" onSubmit={handleSearchSubmit}>
             <Form.Control
               type="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Nome Città"
               className="me-2"
               aria-label="Search" />
