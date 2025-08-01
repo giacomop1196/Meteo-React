@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { Container, Row, Col, Image, Spinner, Alert, Card } from "react-bootstrap"
+import { Image, Spinner, Alert, Card } from "react-bootstrap"
 
 const MeteoHome = (props) => {
 
@@ -21,8 +21,7 @@ const MeteoHome = (props) => {
     }, [props.city])
 
 
-
-    // Funzione per recuperare i film dall'api (Il parametro è passato dalla props)
+    //Funzione per recuperare i dati dall'api
     const getResults = () => {
 
         fetch(apiLink, {
@@ -71,7 +70,7 @@ const MeteoHome = (props) => {
                 </Alert>
             )}
             {results && (
-                <Card className="text-body rounded-5 h-100 shadow-sm w-100">
+                <Card className="text-body rounded-5 h-100 shadow-sm w-100" onClick={() => {navigate('/detail/' + results.id)}}>
                     <Card.Body className="p-4 d-flex flex-column">
                         <div className="d-flex mb-auto">
                             <h6 className="flex-grow-1">{results.name}, {results.sys.country}</h6>

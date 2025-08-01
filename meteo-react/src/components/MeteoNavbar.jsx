@@ -1,11 +1,14 @@
 import { Container, Form, Nav, Button, Navbar, NavDropdown } from "react-bootstrap"
-
+import { Link, useLocation } from 'react-router-dom'
 
 const MeteoNavbar = () => {
- return (
+
+  const location = useLocation()
+
+  return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
-        <Navbar.Brand href="#">Meteo Epicode</Navbar.Brand>
+        <Navbar.Brand>Meteo Epicode</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -13,8 +16,8 @@ const MeteoNavbar = () => {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            <Nav.Link href="#action1">Home</Nav.Link>
-            <Nav.Link href="#action2">Previsioni</Nav.Link>
+            <Link className={location.pathname === '/' ? 'nav-link active' : 'nav-link'} to="/"> Home </Link>
+            <Nav.Link>Previsioni</Nav.Link>
           </Nav>
           <Form className="d-flex">
             <Form.Control
@@ -23,7 +26,7 @@ const MeteoNavbar = () => {
               className="me-2"
               aria-label="Search"
             />
-            <Button variant="outline-success">Cerca</Button>
+            <Button variant="outline-success" type="submit">Cerca</Button>
           </Form>
         </Navbar.Collapse>
       </Container>

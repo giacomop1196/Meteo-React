@@ -5,22 +5,20 @@ import 'bootstrap-icons/font/bootstrap-icons.min.css';
 import MeteoFooter from './components/MeteoFooter'
 import MeteoNavbar from './components/MeteoNavbar'
 import MeteoMainHome from './components/MeteoMainHome'
+import MeteoDetail from './components/MeteoDetail'
 
 function App() {
 
   return (
     <>
-
-      <MeteoNavbar />
-
       <BrowserRouter>
+        <MeteoNavbar />
         <Routes>
-          <Route path='/' element={<MeteoMainHome/>} />
+          <Route path='/' element={<MeteoMainHome />} />
+          <Route path='/detail/:id' element={<MeteoDetail />} />
         </Routes>
+        <MeteoFooter />
       </BrowserRouter>
-
-      <MeteoFooter />
-
     </>
   )
 }
