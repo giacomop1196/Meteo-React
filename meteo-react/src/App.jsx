@@ -6,17 +6,24 @@ import MeteoFooter from './components/MeteoFooter'
 import MeteoNavbar from './components/MeteoNavbar'
 import MeteoMainHome from './components/MeteoMainHome'
 import MeteoDetail from './components/MeteoDetail'
+import { useState } from 'react'
 
 function App() {
+
+  const [language, setLanguage] = useState('it')
 
   return (
     <>
       <BrowserRouter>
-        <MeteoNavbar />
+        {/*  NAVBAR   */}
+        <MeteoNavbar onLanguageChange={setLanguage}  />
         <Routes>
-          <Route path='/' element={<MeteoMainHome />} />
-          <Route path='/detail/:id' element={<MeteoDetail />} />
+          {/*  MAIN HOME   */}
+          <Route path='/' element={<MeteoMainHome language={language} />} />
+          {/*  DETTAGLI   */}
+          <Route path='/detail/:id' element={<MeteoDetail language={language} />} />
         </Routes>
+        {/*  FOOTER   */}
         <MeteoFooter />
       </BrowserRouter>
     </>

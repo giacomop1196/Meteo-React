@@ -8,7 +8,9 @@ const MeteoHome = (props) => {
 
     const apiKey = 'e682f93aa9548563db7cca91d648b460'
 
-    const apiLink = `https://api.openweathermap.org/data/2.5/weather?q=${props.city},ITA&appid=${apiKey}&units=metric`
+    const language = props.language
+
+    const apiLink = `https://api.openweathermap.org/data/2.5/weather?q=${props.city},ITA&appid=${apiKey}&lang=${language}&units=metric`
 
     const [results, setResults] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
@@ -18,7 +20,7 @@ const MeteoHome = (props) => {
     useEffect(() => {
         getResults()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.city])
+    }, [props.city, props.language])
 
 
     //Funzione per recuperare i dati dall'api

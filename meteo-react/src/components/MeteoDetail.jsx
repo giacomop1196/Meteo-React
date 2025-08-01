@@ -2,16 +2,18 @@ import { Container, Row, Col, Card, Spinner, Alert, Image } from "react-bootstra
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 
-const MeteoDetail = () => {
+const MeteoDetail = (props) => {
 
     // ID passato come parametro
     const params = useParams()
     const cityId = params.id
 
+    const language = props.language
+
     const apiKey = 'e682f93aa9548563db7cca91d648b460'
 
     //Link API per cercare tramite ID della città
-    const apiLink = `https://api.openweathermap.org/data/2.5/weather?id=${cityId}&appid=${apiKey}&units=metric`
+    const apiLink = `https://api.openweathermap.org/data/2.5/weather?id=${cityId}&appid=${apiKey}&lang=${language}&units=metric`
 
     const [results, setResults] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
@@ -21,7 +23,7 @@ const MeteoDetail = () => {
     useEffect(() => {
         getResults()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [params.id])
+    }, [params.id, props.language])
 
 
     //Funzione per recuperare i dati dall'api

@@ -1,7 +1,7 @@
 import { Container, Row, Col } from "react-bootstrap"
 import MeteoHome from './MeteoHome'
 
-const MeteoMainHome = () => {
+const MeteoMainHome = (props) => {
     return (
         <Container fluid className="min-vh-100">
             <Row >
@@ -14,13 +14,13 @@ const MeteoMainHome = () => {
             <Row className="justify-content-center py-2">
 
                 <Col xs={12} sm={6} md={4} className="mb-4 d-flex">
-                    <MeteoHome city='Biancavilla' />
+                    <MeteoHome city='Biancavilla' language={props.language} />
                 </Col>
                 <Col xs={12} sm={6} md={4} className="mb-4 d-flex">
-                    <MeteoHome city='Bisacquino' />
+                    <MeteoHome city='Daiano' language={props.language} />
                 </Col>
                 <Col xs={12} sm={6} md={4} className="mb-4 d-flex">
-                    <MeteoHome city='Tokyo' />
+                    <MeteoHome city='Tokyo' language={props.language} />
                 </Col>
             </Row>
 
