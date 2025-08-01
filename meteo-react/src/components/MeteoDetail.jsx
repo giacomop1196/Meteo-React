@@ -68,7 +68,7 @@ const MeteoDetail = (props) => {
                 setIsError(true)
 
                 //Resetto i risultati perchè altrimenti rimanevano salvati
-                setResults(null); 
+                setResults(null);
                 setResultsPrev(null);
             })
 
@@ -93,7 +93,7 @@ const MeteoDetail = (props) => {
                 console.error("Errore nel recupero dei dati:", error);
                 setIsLoading(false)
                 setIsError(true)
-                
+
                 //Resetto i risultati perchè altrimenti rimanevano salvati
                 setResults(null);
                 setResultsPrev(null);
@@ -101,7 +101,7 @@ const MeteoDetail = (props) => {
     }
 
 
-
+    //Funzione per recupeare l'orario
     const getCurrentTime = (timestamp, timezoneOffset) => {
         const date = new Date((timestamp + timezoneOffset) * 1000);
         const hours = date.getUTCHours().toString().padStart(2, '0');
@@ -136,7 +136,7 @@ const MeteoDetail = (props) => {
                 <Container fluid className="min-vh-100 bg-light background-image">
                     <Row className="p-5">
                         <Alert variant="danger" className="text-center">
-                           <i class="bi bi-exclamation-triangle-fill"></i> Errore nel recupero dei dati!
+                            <i class="bi bi-exclamation-triangle-fill"></i> Errore nel recupero dei dati!
                         </Alert>
                     </Row>
                 </Container>
@@ -153,6 +153,8 @@ const MeteoDetail = (props) => {
 
                     <Row className="justify-content-center py-4">
                         <Col md={8} lg={6} xl={5}>
+
+                            {/* Card */}
                             <Card className="text-body rounded-5 shadow-lg">
                                 <Card.Body className="p-4">
                                     <div className="d-flex justify-content-between align-items-center mb-3">
@@ -161,11 +163,22 @@ const MeteoDetail = (props) => {
                                     </div>
 
                                     <div className="d-flex flex-column text-center my-4">
-                                        <div className="d-flex align-items-center justify-content-center mb-3">
+
+                                        {/* Posizione e immagine */}
+                                        <div className="d-flex align-items-center justify-content-center mb-1">
                                             <Image src={`https://openweathermap.org/img/wn/${results.weather[0].icon}@2x.png`} width="120px" alt={results.weather[0].description} className="me-3" />
                                             <h2 className="display-3 mb-0 font-weight-bold">{results.main.temp}°C</h2>
-
                                         </div>
+
+                                        {/* Temp. Max e Temp. Min */}
+                                        <Row className="text-center small text-muted">
+                                            <Col xs={6}>
+                                                <i className="bi bi-thermometer-snow"></i>  Min: {results.main.temp_min}°C
+                                            </Col>
+                                            <Col xs={6}>
+                                                <i className="bi bi-thermometer-sun"></i>   Max: {results.main.temp_max}°C
+                                            </Col>
+                                        </Row>
 
                                         {/* Se la temperatura sale sopra i 27° compare un Alert */}
                                         {results.main.temp > 27 && (
@@ -174,12 +187,14 @@ const MeteoDetail = (props) => {
                                             </Alert>
                                         )}
 
+                                        {/* Descrizione */}
                                         <span className="lead text-muted text-capitalize">{results.weather[0].description}</span>
                                     </div>
 
                                     <hr className="my-4" />
 
                                     <Row className="text-center">
+                                        {/* Temp. Percepita */}
                                         <Col xs={6} md={4} className="mb-3">
                                             <div className="d-flex flex-column align-items-center">
                                                 <i className="bi bi-thermometer-half me-2 fs-4 text-primary"></i>
@@ -187,6 +202,7 @@ const MeteoDetail = (props) => {
                                                 <strong>{results.main.feels_like}°C</strong>
                                             </div>
                                         </Col>
+                                        {/* Vento */}
                                         <Col xs={6} md={4} className="mb-3">
                                             <div className="d-flex flex-column align-items-center">
                                                 <i className="bi bi-wind me-2 fs-4 text-info"></i>
@@ -195,6 +211,7 @@ const MeteoDetail = (props) => {
                                                 <small className="text-muted">({results.wind.deg}°)</small>
                                             </div>
                                         </Col>
+                                        {/* Umidità */}
                                         <Col xs={6} md={4} className="mb-3">
                                             <div className="d-flex flex-column align-items-center">
                                                 <i className="bi bi-moisture me-2 fs-4 text-success"></i>
@@ -202,6 +219,7 @@ const MeteoDetail = (props) => {
                                                 <strong>{results.main.humidity}%</strong>
                                             </div>
                                         </Col>
+                                        {/* Pressione */}
                                         <Col xs={6} md={4} className="mb-3">
                                             <div className="d-flex flex-column align-items-center">
                                                 <i className="bi bi-speedometer2 me-2 fs-4 text-warning"></i>
@@ -209,6 +227,7 @@ const MeteoDetail = (props) => {
                                                 <strong>{results.main.pressure} hPa</strong>
                                             </div>
                                         </Col>
+                                        {/* Visibilità */}
                                         <Col xs={6} md={4} className="mb-3">
                                             <div className="d-flex flex-column align-items-center">
                                                 <i className="bi bi-eye me-2 fs-4 text-secondary"></i>
@@ -216,6 +235,7 @@ const MeteoDetail = (props) => {
                                                 <strong>{(results.visibility / 1000).toFixed(1)} km</strong>
                                             </div>
                                         </Col>
+                                        {/* Nuvolosità */}
                                         <Col xs={6} md={4} className="mb-3">
                                             <div className="d-flex flex-column align-items-center">
                                                 <i className="bi bi-cloud-fill me-2 fs-4 text-muted"></i>
@@ -227,6 +247,7 @@ const MeteoDetail = (props) => {
 
                                     <hr className="my-4" />
 
+                                    {/* Tramonto e Alba */}
                                     <Row className="text-center small text-muted">
                                         <Col xs={6}>
                                             <i className="bi bi-sunrise me-1"></i>

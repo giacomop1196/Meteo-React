@@ -28,7 +28,7 @@ const MeteoNavbar = ({ onLanguageChange }) => {
           <Nav className="me-auto my-2 my-lg-0"
             style={{ maxHeight: '100px' }} navbarScroll>
 
-            <Link className={location.pathname === '/' ? 'nav-link active' : 'nav-link'} to="/"><i class="bi bi-cloud-sun mx-auto"></i> Home </Link>
+            <Link className={location.pathname === '/' ? 'nav-link active' : 'nav-link'} to="/"><i className="bi bi-cloud-sun mx-auto"></i> Home </Link>
 
             <NavDropdown title="Lingua" id="language-dropdown">
               <div style={{ maxHeight: '200px', overflowY: 'auto' }}>

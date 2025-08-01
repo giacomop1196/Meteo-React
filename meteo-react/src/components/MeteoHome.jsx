@@ -72,8 +72,11 @@ const MeteoHome = (props) => {
                 </Alert>
             )}
             {results && (
+                
                 <Card className="text-body rounded-5 h-100 shadow-sm w-100 my-3" onClick={() => {navigate('/detail/id/' + results.id)}}>
+
                     <Card.Body className="p-4 d-flex flex-column">
+                       
                         <div className="d-flex mb-auto">
                             <h6 className="flex-grow-1">{results.name}, {results.sys.country}</h6>
                             <h6>{getCurrentTime(results.dt, results.timezone)}</h6>
@@ -98,11 +101,8 @@ const MeteoHome = (props) => {
                                 </div>
                             </div>
                             <div>
-                                <Image
-                                    src={`https://openweathermap.org/img/wn/${results.weather[0].icon}@2x.png`}
-                                    width="100px"
-                                    alt={results.weather[0].description}
-                                />
+                                <Image src={`https://openweathermap.org/img/wn/${results.weather[0].icon}@2x.png`}
+                                    width="100px" alt={results.weather[0].description}/>
                             </div>
                         </div>
                     </Card.Body>
