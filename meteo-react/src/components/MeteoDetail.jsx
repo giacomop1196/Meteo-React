@@ -7,18 +7,18 @@ const MeteoDetail = (props) => {
     // Recupero il Parametro dal path
     const params = useParams()
 
+    // Linguaggio
     const language = props.language
 
+    // Api Key
     const apiKey = 'e682f93aa9548563db7cca91d648b460'
 
-    //Link API per cercare tramite ID della città
-    // const apiLink = `https://api.openweathermap.org/data/2.5/weather?${cityId}&appid=${apiKey}&lang=${language}&units=metric`
-
     const [results, setResults] = useState(null)
+    const [resultsPrev, setResultsPrev] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
     const [isError, setIsError] = useState(false)
 
-
+    // Quando avviamo il componente o cambia una props 
     useEffect(() => {
 
         let queryParam = '';
@@ -34,16 +34,20 @@ const MeteoDetail = (props) => {
         //Link API
         const apiLink = `https://api.openweathermap.org/data/2.5/weather?${queryParam}&appid=${apiKey}&lang=${language}&units=metric`;
 
-        // Chiama getResults passandogli il link completo dell'api
-        getResults(apiLink);
+        //Link Previsioni
+        const apiLinkForecast = `http://api.openweathermap.org/data/2.5/forecast?${queryParam}&appid=${apiKey}&lang=${language}&units=metric`
+
+        // Chiama getResults passandogli l link completi dell'api
+        getResults(apiLink, apiLinkForecast);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params.cityId, params.cityName, language]);
 
 
     //Funzione per recuperare i dati dall'api
-    const getResults = (apiLink) => {
+    const getResults = (apiLink, apiLinkForecast) => {
 
+        //API Dettagli
         fetch(apiLink, {
         })
             .then((res) => {
@@ -63,7 +67,31 @@ const MeteoDetail = (props) => {
                 setIsLoading(false)
                 setIsError(true)
             })
+
+        //API Previsioni
+        fetch(apiLinkForecast, {
+        })
+            .then((res) => {
+                if (res.ok) {
+                    return res.json()
+                }
+                throw new Error('Errore nel recupero dei dati')
+            })
+            .then((prev) => {
+                console.log(prev, 'dati meteo previsioni arrivati')
+                setResultsPrev(prev)
+                setIsLoading(false)
+
+
+            })
+            .catch((error) => {
+
+                console.error("Errore nel recupero dei dati:", error);
+                setIsLoading(false)
+                setIsError(true)
+            })
     }
+
 
 
     const getCurrentTime = (timestamp, timezoneOffset) => {
@@ -71,6 +99,14 @@ const MeteoDetail = (props) => {
         const hours = date.getUTCHours().toString().padStart(2, '0');
         const minutes = date.getUTCMinutes().toString().padStart(2, '0');
         return `${hours}:${minutes}`;
+    };
+
+
+    // Funzione helper per formattare data e ora delle previsioni
+    const formatForecastDateTime = (timestamp) => {
+        const date = new Date(timestamp * 1000); // Il timestamp dal forecast è già locale
+        const options = { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
+        return date.toLocaleDateString(language, options);
     };
 
 
@@ -91,7 +127,7 @@ const MeteoDetail = (props) => {
             )}
             {/* Risultato */}
             {results && (
-                <Container fluid className="min-vh-100 bg-light">
+                <Container fluid className="min-vh-100 bg-light background-image">
                     <Row className="justify-content-center pt-5">
                         <Col xs={12} className="text-center">
                             <h1>Dettagli Meteo</h1>
@@ -112,7 +148,16 @@ const MeteoDetail = (props) => {
                                         <div className="d-flex align-items-center justify-content-center mb-3">
                                             <Image src={`https://openweathermap.org/img/wn/${results.weather[0].icon}@2x.png`} width="120px" alt={results.weather[0].description} className="me-3" />
                                             <h2 className="display-3 mb-0 font-weight-bold">{results.main.temp}°C</h2>
+
                                         </div>
+
+                                        {/* Se la temperatura sale sopra i 27° compare un Alert */}
+                                        {results.main.temp > 27 && (
+                                        <Alert key='danger' variant='danger' className="mt-3">
+                                        <i class="bi bi-exclamation-triangle-fill"></i> Allerta moderata per temperature elevate!
+                                        </Alert>
+                                    )}
+
                                         <span className="lead text-muted text-capitalize">{results.weather[0].description}</span>
                                     </div>
 
@@ -182,8 +227,38 @@ const MeteoDetail = (props) => {
                         </Col>
                     </Row>
                 </Container>
-            )
-            }
+            )}
+
+            {/* Previsioni */}
+            {resultsPrev && resultsPrev.list && resultsPrev.list.length > 0 && (
+                <Container fluid>
+                    <Row className="justify-content-center py-4">
+                        <Col xs={12}>
+                            <h3 className="text-center mb-4">Previsioni per le prossime ore</h3>
+                            <Card className="text-body rounded-4 shadow-lg mx-3">
+                                <Card.Body className="p-3 w-100">
+                                    <Row className="g-2 flex-nowrap overflow-x-auto pb-2">
+                                        {resultsPrev.list.map(forecast => (
+                                            <Col key={forecast.dt} className="text-center" xs={6} sm={4} md={3} lg={2}>
+                                                <Card className="h-100 p-2 d-flex flex-column justify-content-between align-items-center">
+                                                    <small className="text-muted mb-1">
+                                                        {formatForecastDateTime(forecast.dt)}
+                                                    </small>
+                                                    <Image src={`https://openweathermap.org/img/wn/${forecast.weather[0].icon}.png`}
+                                                        width="50px" alt={forecast.weather[0].description} className="mx-auto my-1"
+                                                    />
+                                                    <p className="mb-0"><strong>{forecast.main.temp}°C</strong></p>
+                                                    <small className="text-muted text-capitalize">{forecast.weather[0].description}</small>
+                                                </Card>
+                                            </Col>
+                                        ))}
+                                    </Row>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                </Container>
+            )}
         </>
     )
 }

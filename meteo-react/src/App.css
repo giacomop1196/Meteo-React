@@ -1,0 +1,16 @@
+/* public/css/style.css */
+
+.background-image {
+    background-image: url('/public/img/background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; 
+}
+
+.navbar-color {
+    background-color: #94D4F5;
+}
+
+.footer-color {
+    background-color: #BBE7FB;
+}
